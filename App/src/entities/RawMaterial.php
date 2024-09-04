@@ -4,7 +4,7 @@ namespace App\Entities;
 
 class RawMaterial
 {
-    private int $id;
+    private ?int $id = null;
     private string $name;
     private string $description;
     private float $quantity;
@@ -18,7 +18,7 @@ class RawMaterial
         $this->unit = $unit;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

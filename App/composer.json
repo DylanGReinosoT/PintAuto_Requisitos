@@ -1,0 +1,19 @@
+{
+  "name": "joel/app",
+  "description": "Ing. Requisitos",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Joel Daniel Arguello Espinosa",
+      "email": "jdarguello1@espe.edu.ec"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "monolog/monolog": "^2.0"
+  }
+}

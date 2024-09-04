@@ -1,9 +1,11 @@
 services:
   php:
-    image: php:8.2-apache
+    build: 
+      context: .
+      dockerfile: Dockerfile
     container_name: php-service
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www/html
     ports:
       - "8080:80"
     environment:
@@ -13,8 +15,6 @@ services:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
     depends_on:
       - db
-    command: bash -c "composer install && apache2-foreground"
-
 
   db:
     image: mysql:8.0

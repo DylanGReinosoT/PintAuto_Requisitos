@@ -7,9 +7,14 @@ use App\UseCases\GetRawMaterial;
 use App\UseCases\UpdateRawMaterial;
 use App\UseCases\DeleteRawMaterial;
 
-$pdo = new PDO('mysql:host=localhost;dbname=your_database_name', 'your_username', 'your_password');
-$repository = new MysqlRawMaterialRepository($pdo);
+try {
+    $pdo = new PDO('mysql:host=db;dbname=raw_materials_db', 'user', 'password');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Error en la conexión a la base de datos: ' . $e->getMessage());
+}
 
+$repository = new MysqlRawMaterialRepository($pdo);
 $controller = new RawMaterialController(
     new CreateRawMaterial($repository),
     new GetRawMaterial($repository),
@@ -18,12 +23,21 @@ $controller = new RawMaterialController(
 );
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo $controller->create($_POST);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
-    echo $controller->get((int)$_GET['id']);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'PUT') {
-    parse_str(file_get_contents("php://input"), $put_vars);
-    echo $controller->update((int)$put_vars['id'], $put_vars);
-} elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE' && isset($_GET['id'])) {
-    echo $controller->delete((int)$_GET['id']);
+    if (isset($_GET['id'])) {
+        $controller->update($_GET['id'], $_POST);
+    } else {
+        $controller->create($_POST);
+    }
+    header('Location: /src/web/views/index.php');
+    exit;
 }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
+    $controller->delete((int)$_GET['delete']);
+    header('Location: /src/web/views/index.php');
+    exit;
+}
+
+
+$rawMaterials = $repository->findAll();
