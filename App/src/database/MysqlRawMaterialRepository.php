@@ -36,7 +36,7 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
             ]);
             $rawMaterial->setId((int)$this->connection->lastInsertId());
         }
-        
+
         return $rawMaterial;
     }
 
@@ -44,8 +44,8 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
     {
         $stmt = $this->connection->prepare('SELECT * FROM raw_materials WHERE id = ?');
         $stmt->execute([$id]);
-        $data = $stmt->fetch();
 
+        $data = $stmt->fetch();
         if ($data) {
             $rawMaterial = new RawMaterial($data['name'], $data['description'], (float)$data['quantity'], $data['unit']);
             $rawMaterial->setId($data['id']);
@@ -54,6 +54,7 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
 
         return null;
     }
+
 
     public function delete(int $id): void
     {

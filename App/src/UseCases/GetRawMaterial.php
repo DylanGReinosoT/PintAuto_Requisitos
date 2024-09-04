@@ -15,6 +15,7 @@ class GetRawMaterial
 
     public function execute(int $id)
     {
+        
         return $this->repository->findById($id);
     }
 }

@@ -34,12 +34,12 @@ class RawMaterialController
 
     public function get($id)
     {
-        $rawMaterial = $this->getRawMaterial->execute($id);
-        return json_encode($rawMaterial);
+        return $this->getRawMaterial->execute($id);
     }
 
     public function update($id, $request)
     {
+
         $rawMaterial = $this->updateRawMaterial->execute($id, $request['name'], $request['description'], $request['quantity'], $request['unit']);
         return json_encode($rawMaterial);
     }

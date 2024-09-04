@@ -8,5 +8,5 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Gestión de Materia Prima</a>
+    <a class="navbar-brand" href="/">Gestión de Materia Prima</a>
 </nav>

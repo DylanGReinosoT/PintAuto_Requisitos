@@ -25,13 +25,14 @@ $controller = new RawMaterialController(
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['id'])) {
         $controller->update($_GET['id'], $_POST);
+        header('Location: /src/web/views/index.php');
+        exit;
     } else {
         $controller->create($_POST);
+        header('Location: /src/web/views/index.php');
+        exit;
     }
-    header('Location: /src/web/views/index.php');
-    exit;
 }
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
     $controller->delete((int)$_GET['delete']);
@@ -39,5 +40,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['delete'])) {
     exit;
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
+    $material = $controller->get($_GET['id']);
+    if ($material) {
+        error_log('Material encontrado con ID: ' . $_GET['id']);
+    } else {
+        error_log('Material no encontrado con ID: ' . $_GET['id']);
+        header('Location: /src/web/views/index.php');
+        exit;
+    }
+}
 
 $rawMaterials = $repository->findAll();

@@ -7,16 +7,6 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = (int)$_GET['id'];
-
-$material = $controller->get($id);
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $controller->update($id, $_POST);
-    header('Location: /src/web/views/index.php');
-    exit;
-}
 ?>
 
 <?php include __DIR__ . '/header.php'; ?>
