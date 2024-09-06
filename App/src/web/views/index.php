@@ -75,8 +75,6 @@ include __DIR__ . '/header.php';
                     <td><?= htmlspecialchars($material->getDate()->format('Y-m-d')) ?></td>
                     <td>
                         <a href="edit.php?id=<?= $material->getId() ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="index.php?delete=<?= $material->getId() ?>" class="btn btn-danger btn-sm"
-                            onclick="return confirm('¿Estás seguro de que deseas eliminar este material?');">Eliminar</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
