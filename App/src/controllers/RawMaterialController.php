@@ -28,19 +28,36 @@ class RawMaterialController
 
     public function create($request)
     {
-        $rawMaterial = $this->createRawMaterial->execute($request['name'], $request['description'], $request['quantity'], $request['unit']);
+        $rawMaterial = $this->createRawMaterial->execute(
+            $request['name'],
+            $request['code'],
+            $request['description'],
+            $request['quantity'],
+            $request['value'],
+            $request['unit'],
+            new \DateTime($request['date'])
+        );
         return json_encode($rawMaterial);
     }
 
     public function get($id)
     {
-        return $this->getRawMaterial->execute($id);
+        $rawMaterial = $this->getRawMaterial->execute($id);
+        return json_encode($rawMaterial);
     }
 
     public function update($id, $request)
     {
-
-        $rawMaterial = $this->updateRawMaterial->execute($id, $request['name'], $request['description'], $request['quantity'], $request['unit']);
+        $rawMaterial = $this->updateRawMaterial->execute(
+            $id,
+            $request['name'],
+            $request['code'],
+            $request['description'],
+            $request['quantity'],
+            $request['value'],
+            $request['unit'],
+            new \DateTime($request['date'])
+        );
         return json_encode($rawMaterial);
     }
 

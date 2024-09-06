@@ -15,6 +15,11 @@ if (!isset($_GET['id'])) {
     <h2>Editar Material Prima</h2>
     <form method="POST" action="">
         <div class="form-group">
+            <label for="code">Código:</label>
+            <input type="text" id="code" name="code" class="form-control" value="<?= htmlspecialchars($material->getCode()) ?>" required>
+        </div>
+
+        <div class="form-group">
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" class="form-control" value="<?= htmlspecialchars($material->getName()) ?>" required>
         </div>
@@ -32,6 +37,16 @@ if (!isset($_GET['id'])) {
         <div class="form-group">
             <label for="unit">Unidad:</label>
             <input type="text" id="unit" name="unit" class="form-control" value="<?= htmlspecialchars($material->getUnit()) ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="value">Valor:</label>
+            <input type="number" id="value" name="value" step="0.01" class="form-control" value="<?= htmlspecialchars($material->getValue()) ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="date">Fecha:</label>
+            <input type="date" id="date" name="date" class="form-control" value="<?= htmlspecialchars($material->getDate()->format('Y-m-d')) ?>" required>
         </div>
 
         <button type="submit" class="btn btn-success mt-3">Actualizar Material</button>

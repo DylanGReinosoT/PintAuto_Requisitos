@@ -18,21 +18,27 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
     public function save(RawMaterial $rawMaterial): RawMaterial
     {
         if ($rawMaterial->getId()) {
-            $stmt = $this->connection->prepare('UPDATE raw_materials SET name = ?, description = ?, quantity = ?, unit = ? WHERE id = ?');
+            $stmt = $this->connection->prepare('UPDATE raw_materials SET name = ?, code = ?, description = ?, quantity = ?, value = ?, unit = ?, date = ? WHERE id = ?');
             $stmt->execute([
                 $rawMaterial->getName(),
+                $rawMaterial->getCode(),
                 $rawMaterial->getDescription(),
                 $rawMaterial->getQuantity(),
+                $rawMaterial->getValue(),
                 $rawMaterial->getUnit(),
+                $rawMaterial->getDate()->format('Y-m-d'),
                 $rawMaterial->getId()
             ]);
         } else {
-            $stmt = $this->connection->prepare('INSERT INTO raw_materials (name, description, quantity, unit) VALUES (?, ?, ?, ?)');
+            $stmt = $this->connection->prepare('INSERT INTO raw_materials (name, code, description, quantity, value, unit, date) VALUES (?, ?, ?, ?, ?, ?, ?)');
             $stmt->execute([
                 $rawMaterial->getName(),
+                $rawMaterial->getCode(),
                 $rawMaterial->getDescription(),
                 $rawMaterial->getQuantity(),
-                $rawMaterial->getUnit()
+                $rawMaterial->getValue(),
+                $rawMaterial->getUnit(),
+                $rawMaterial->getDate()->format('Y-m-d')
             ]);
             $rawMaterial->setId((int)$this->connection->lastInsertId());
         }
@@ -45,16 +51,23 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
         $stmt = $this->connection->prepare('SELECT * FROM raw_materials WHERE id = ?');
         $stmt->execute([$id]);
 
-        $data = $stmt->fetch();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($data) {
-            $rawMaterial = new RawMaterial($data['name'], $data['description'], (float)$data['quantity'], $data['unit']);
+            $rawMaterial = new RawMaterial(
+                $data['name'],
+                $data['code'],
+                $data['description'],
+                (float)$data['quantity'],
+                (float)$data['value'],
+                $data['unit'],
+                new \DateTime($data['date'])
+            );
             $rawMaterial->setId($data['id']);
             return $rawMaterial;
         }
 
         return null;
     }
-
 
     public function delete(int $id): void
     {
@@ -69,7 +82,15 @@ class MysqlRawMaterialRepository implements RawMaterialRepositoryInterface
         $rawMaterials = [];
 
         foreach ($results as $data) {
-            $rawMaterial = new RawMaterial($data['name'], $data['description'], (float)$data['quantity'], $data['unit']);
+            $rawMaterial = new RawMaterial(
+                $data['name'],
+                $data['code'],
+                $data['description'],
+                (float)$data['quantity'],
+                (float)$data['value'],
+                $data['unit'],
+                new \DateTime($data['date'])
+            );
             $rawMaterial->setId($data['id']);
             $rawMaterials[] = $rawMaterial;
         }

@@ -14,9 +14,16 @@ class CreateRawMaterial
         $this->repository = $repository;
     }
 
-    public function execute(string $name, string $description, float $quantity, string $unit): RawMaterial
-    {
-        $rawMaterial = new RawMaterial($name, $description, $quantity, $unit);
+    public function execute(
+        string $name,
+        string $code,
+        string $description,
+        float $quantity,
+        float $value,
+        string $unit,
+        \DateTime $date
+    ): RawMaterial {
+        $rawMaterial = new RawMaterial($name, $code, $description, $quantity, $value, $unit, $date);
         return $this->repository->save($rawMaterial);
     }
 }
